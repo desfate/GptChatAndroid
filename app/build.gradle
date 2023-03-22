@@ -1,0 +1,119 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    namespace 'com.github.desfate.chatgptandroid'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.github.desfate.chatgptandroid"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        compose true
+        viewBinding true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
+
+    kapt {
+        correctErrorTypes = true
+    }
+}
+
+
+
+
+
+
+dependencies {
+
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+
+    //lifecycle https://developer.android.google.cn/jetpack/androidx/releases/lifecycle?hl=zh_cn
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+
+    //navigation https://developer.android.google.cn/jetpack/androidx/releases/navigation?hl=zh_cn
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+
+    implementation project(path: ':gptcore')
+
+    // compose https://developer.android.google.cn/jetpack/androidx/releases/compose?hl=zh_cn
+
+    implementation 'androidx.activity:activity-compose:1.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0'
+
+    implementation 'androidx.compose.ui:ui:1.1.1' //                 与设备互动所需的 Compose UI 的基本组件，包括布局、绘图和输入
+    implementation 'androidx.compose.ui:ui-text-google-fonts:1.3.0'  // 字体库 您可以使用 Compose 应用中的可下载字体 API 异步下载 Google 字体
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.1.1'// 预览支持
+    implementation 'androidx.compose.material:material-icons-extended:1.3.1' // 图标支持
+
+    implementation 'androidx.compose.foundation:foundation:1.3.1'  //使用现成可用的构建块编写 Jetpack Compose 应用，还可扩展 Foundation 以构建您自己的设计系统元素
+    implementation 'androidx.compose.material3:material3:1.0.1'//   使用 Material Design 3（新一代 Material Design）组件构建 Jetpack Compose UI。Material 3 中包括了更新后的主题和组件，以及动态配色等 Material You 个性化功能，旨在与新的 Android 12 视觉风格和系统界面相得益彰。
+    implementation 'androidx.compose.material3:material3-window-size-class:1.0.1'
+    implementation "androidx.compose.material:material:1.3.1"//     使用现成可用的 Material Design 组件构建 Jetpack Compose UI。这是更高层级的 Compose 入口点，旨在提供与 www.material.io 上描述的组件一致的组件。
+
+    // bravh https://github.com/CymChad/BaseRecyclerViewAdapterHelper
+    implementation "io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.0-beta02"
+    implementation project(path: ':apt-annotation')
+    kapt project(path: ':apt-processor')
+
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // 工具类集合 https://github.com/Blankj/AndroidUtilCode/blob/master/lib/utilcode/README-CN.md
+    implementation 'com.blankj:utilcodex:1.31.1'
+
+    // 吐司框架：https://github.com/getActivity/Toaster
+    implementation 'com.github.getActivity:Toaster:12.0'
+
+    // dagger
+    implementation("com.google.dagger:hilt-android:2.44")
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.1.1'
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+
+    // picker
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:4.1.11'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelView:4.1.11'  //    自定义选择器
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:4.1.11'//    单项/数字、二三级联动、日期/时间等滚轮选择器
+
+    // datastore https://developer.android.google.cn/jetpack/androidx/releases/datastore?hl=en
+    implementation "androidx.datastore:datastore-core:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+}

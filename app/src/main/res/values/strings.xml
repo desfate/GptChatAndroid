@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">ChatGptAndroid</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_key">Key Manager</string>
+    <string name="menu_github">Github</string>
+
+    <string name="me_default">me</string>
+    <string name="attached_image">Attached image</string>
+    <string name="jumpBottom">Jump to Bottom</string>
+    <string name="menu_chat">chat</string>
+    <string name="text_to_chat">to chat</string>
+    <string name="config_secret_key">config secret key</string>
+
+
+    <string name="emoji_selector_desc">Emoji selector</string>
+    <string name="emoji_selector_bt_desc">Show Emoji selector</string>
+    <string name="dm_desc">Direct Message</string>
+    <string name="attach_photo_desc">Attach Photo</string>
+    <string name="map_selector_desc">Location selector</string>
+    <string name="videochat_desc">Start videochat</string>
+    <string name="textfield_desc">Text input</string>
+    <string name="not_available">Functionality currently not available</string>
+    <string name="not_available_subtitle">Grab a beverage and check back later!</string>
+    <string name="search">Search</string>
+    <string name="info">Information</string>
+    <string name="more_options">More options</string>
+
+    <string name="send">Send</string>
+    <string name="textfield_hint">Message #chatgpt</string>
+    <string name="emojis_label">Emojis</string>
+    <string name="stickers_label">Stickers</string>
+</resources>
