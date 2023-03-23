@@ -1,6 +1,7 @@
 package com.github.desfate.gptcore.http
 
 
+import com.github.desfate.gptcore.config.BASE_SECRET_KEY
 import com.github.desfate.gptcore.config.DEBUG_BASE_URL
 import com.hjq.gson.factory.GsonFactory
 import okhttp3.*
@@ -21,6 +22,8 @@ class HttpEngine private constructor() {
      * 双重校验锁单例
      */
     companion object {
+        var authorization = "";
+
         val instance: HttpEngine by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             HttpEngine()
         }
@@ -30,6 +33,8 @@ class HttpEngine private constructor() {
     var retrofit: Retrofit? = null
 
     private val timeOut = 30000L  // 超时时间
+
+
 
     /**
      * http网络请求基于OkHttp + Retrofit
@@ -84,10 +89,11 @@ class HttpEngine private constructor() {
     class NetInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request().newBuilder()
+            if (authorization.isEmpty()) authorization = BASE_SECRET_KEY
             val requestBuilder = request  // 自定义 header 处理
                 .addHeader("Connection", "close")
                 .addHeader("Accept-Encoding", "identity")
-                .addHeader("Authorization", "Bearer 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")
+                .addHeader("Authorization", "Bearer $authorization")
                 .build()
             return chain.proceed(requestBuilder)
         }
