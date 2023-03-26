@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -69,7 +70,13 @@ class HomeFragment : Fragment() {
         }
 
         adapter.addOnItemChildClickListener(R.id.submit_btn) { adapter, view, position ->
-            navController.navigate(R.id.action_nav_home_to_nav_chat)
+            val bundle = bundleOf("chat_type" to "text")
+            navController.navigate(R.id.action_nav_home_to_nav_chat, bundle)
+        }
+
+        adapter.addOnItemChildClickListener(R.id.submit_image_btn) { adapter, view, position ->
+            val bundle = bundleOf("chat_type" to "image")
+            navController.navigate(R.id.action_nav_home_to_nav_chat, bundle)
         }
     }
 

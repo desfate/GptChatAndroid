@@ -39,5 +39,6 @@ data class Message(
     val content: String,
     val timestamp: String,
     val image: Int? = null,
-    val authorImage: Int = if (author == "me") R.drawable.ic_chat_user else R.drawable.ic_chat_ai
+    val authorImage: Int = if (author == "me") R.drawable.ic_chat_user else R.drawable.ic_chat_ai,
+    val imageSrc: String = "",
 )

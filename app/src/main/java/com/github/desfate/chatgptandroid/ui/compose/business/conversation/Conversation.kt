@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.LastBaseline
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
@@ -30,6 +31,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
+import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
 import com.blankj.utilcode.util.TimeUtils
 import com.github.desfate.chatgptandroid.R
 import com.github.desfate.chatgptandroid.ui.compose.business.ChatViewModel
@@ -48,7 +55,8 @@ fun ConversationContent(
     uiState: ConversationUiState,  //           关联的数据状态
     navigateToProfile: (String) -> Unit,  //    点击行为导致的navigate跳转
     modifier: Modifier = Modifier, //           装饰器
-    onNavIconPressed: () -> Unit = { } //       按钮点击事件
+    onNavIconPressed: () -> Unit = { }, //      按钮点击事件
+    type: String                        //      聊天类型
 ) {
     val authorName = stringResource(id = R.string.me_default)
     val currentTime = TimeUtils.getSafeDateFormat("HH:mm:ss").format(Date(System.currentTimeMillis()))
@@ -87,7 +95,7 @@ fun ConversationContent(
             )
             UserInput(
                 onMessageSent = { content ->
-                    model.requestChat(content)
+                    model.requestChat(content, type)
                     uiState.addMessage(
                         Message(authorName, content, currentTime)
                     )
@@ -391,6 +399,19 @@ fun ChatItemBubble(
             )
         }
 
+        if (message.imageSrc.isNotEmpty()){
+            Spacer(modifier = Modifier.height(4.dp))
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(message.imageSrc)
+                    .placeholder(R.mipmap.placeholder)
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.size(160.dp).clip(RoundedCornerShape(15.dp)),
+            )
+        }
+
         message.image?.let {
             Spacer(modifier = Modifier.height(4.dp))
             Surface(
@@ -489,7 +510,8 @@ fun ConversationPreview() {
     MainTheme() {
         ConversationContent(
             uiState = exampleUiState,
-            navigateToProfile = { }
+            navigateToProfile = { },
+            type = "text"
         )
     }
 }

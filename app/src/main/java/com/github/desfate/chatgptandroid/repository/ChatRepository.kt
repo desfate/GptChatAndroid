@@ -6,7 +6,9 @@ import com.github.desfate.apt_annotation.HttpExceptionCatch
 import com.github.desfate.chatgptandroid.di.SECRET_GPT_KEY
 import com.github.desfate.chatgptandroid.di.dataStore
 import com.github.desfate.gptcore.beans.request.CompletionsRequest
+import com.github.desfate.gptcore.beans.request.ImageGenerationsRequest
 import com.github.desfate.gptcore.beans.response.CompletionsResponse
+import com.github.desfate.gptcore.beans.response.ImageGenerationsResponse
 import com.github.desfate.gptcore.config.BASE_SECRET_KEY
 import com.github.desfate.gptcore.service.GptService
 import kotlinx.coroutines.flow.Flow
@@ -29,10 +31,9 @@ class ChatRepository @Inject constructor(
         return gptService.completionsMessage(request)
     }
 
-//    fun getTestReqRx(testRequest: TestRequest, lifecycleOwner: LifecycleOwner) =
-//        rxTestService.orderPay(testRequest).subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
-//            .to(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner)))
-
+    suspend fun getImageReq(request: ImageGenerationsRequest): ImageGenerationsResponse{
+        return gptService.completionsImage(request)
+    }
 
     // 获取SECRET KEY
     fun getSecretKeyFromDataStore(context: Context): Flow<String> {

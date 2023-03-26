@@ -116,4 +116,8 @@ dependencies {
     // datastore https://developer.android.google.cn/jetpack/androidx/releases/datastore?hl=en
     implementation "androidx.datastore:datastore-core:1.0.0"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    // coil https://github.com/coil-kt/coil compose 图片框架
+    implementation "io.coil-kt:coil:2.3.0"
+    implementation("io.coil-kt:coil-compose:2.3.0")
 }

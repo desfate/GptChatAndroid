@@ -36,4 +36,5 @@
     <string name="textfield_hint">Message #chatgpt</string>
     <string name="emojis_label">Emojis</string>
     <string name="stickers_label">Stickers</string>
+    <string name="text_to_image">to image</string>
 </resources>

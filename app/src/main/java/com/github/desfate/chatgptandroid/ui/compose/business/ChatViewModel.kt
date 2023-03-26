@@ -10,7 +10,9 @@ import com.github.desfate.chatgptandroid.service.netRequest
 import com.github.desfate.chatgptandroid.ui.compose.business.conversation.ConversationUiState
 import com.github.desfate.chatgptandroid.ui.compose.business.conversation.Message
 import com.github.desfate.gptcore.beans.request.CompletionsRequest
+import com.github.desfate.gptcore.beans.request.ImageGenerationsRequest
 import com.github.desfate.gptcore.beans.response.CompletionsResponse
+import com.github.desfate.gptcore.beans.response.ImageGenerationsResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +28,18 @@ class ChatViewModel @Inject constructor(val chatRepository: ChatRepository) : Vi
     }
     val text: LiveData<String> = _text
 
-    fun requestChat(info: String) {
+    fun requestChat(info: String, type: String) {
+        when(type){
+            "text" -> textReq(info)
+            "image" -> imageReq(info)
+        }
+
+    }
+
+    /**
+     * 文本聊天请求
+     */
+    fun textReq(info: String){
         netRequest(
             requestBlock = {
                 chatRepository.getTestReq(
@@ -46,7 +59,7 @@ class ChatViewModel @Inject constructor(val chatRepository: ChatRepository) : Vi
                         "gpt",
                         it.choices[0].message.content,
                         TimeUtils.getSafeDateFormat("HH:mm:ss")
-                            .format(Date(System.currentTimeMillis()))
+                            .format(Date(System.currentTimeMillis())),
                     ),
                 )
                 completionsResponse.value = it
@@ -57,8 +70,36 @@ class ChatViewModel @Inject constructor(val chatRepository: ChatRepository) : Vi
         )
     }
 
-    val completionsResponse = MutableStateFlow<CompletionsResponse?>(null)
+    fun imageReq(info: String){
+        netRequest(
+            requestBlock = {
+                chatRepository.getImageReq(
+                    ImageGenerationsRequest(
+                        1,info,"256x256"
+                    )
+                )
+            },
+            success = {
+                exampleUiState.addMessage(
+                    Message(
+                        "gpt",
+                        "gpt image",
+                        TimeUtils.getSafeDateFormat("HH:mm:ss")
+                            .format(Date(System.currentTimeMillis())),
+                        imageSrc =  it.data[0].url
+                    ),
+                )
+                imageGenerationsResponse.value = it
+            },
+            error = {
+                println(it.message)
+            }
+        )
+    }
 
+    // 网络返回的原数据
+    val completionsResponse = MutableStateFlow<CompletionsResponse?>(null)
+    val imageGenerationsResponse = MutableStateFlow<ImageGenerationsResponse?>(null)
 
     val exampleUiState = ConversationUiState(
         initialMessages = listOf(

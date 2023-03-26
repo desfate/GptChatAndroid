@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.github.desfate.chatgptandroid.R
 import com.github.desfate.chatgptandroid.ui.compose.business.conversation.ConversationContent
 import com.github.desfate.chatgptandroid.ui.compose.theme.MainTheme
@@ -45,7 +46,8 @@ class ChatFragment : Fragment() {
                     },
                     onNavIconPressed = {
                         chatViewModel.openDrawer()
-                    }
+                    },
+                    type = arguments?.getString("chat_type") ?: ""
                 )
             }
         }
