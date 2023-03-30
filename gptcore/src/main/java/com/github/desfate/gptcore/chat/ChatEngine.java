@@ -8,6 +8,4 @@ public interface ChatEngine {
      * @return 返回消息
      */
     public <T> String sendMessageNet(T message);
-
-
 }

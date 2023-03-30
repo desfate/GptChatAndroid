@@ -12,10 +12,9 @@ const val OPENAI_NET_TYPE = 1
 const val OPENAI_LOCAL_TYPE = 2
 class HomeAdapter(data: List<HomeEntity>) : BaseMultiItemAdapter<HomeEntity>(data) {
 
-
-
     class OpenAINetVH(var itemOpenAiNetBinding: ItemOpenAiNetBinding) :
         RecyclerView.ViewHolder(itemOpenAiNetBinding.root)
+
 
     init {
         addItemType(OPENAI_NET_TYPE, object : OnMultiItemAdapterListener<HomeEntity, OpenAINetVH> {

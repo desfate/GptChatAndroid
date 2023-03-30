@@ -52,4 +52,7 @@ dependencies {
     // Json 解析框架：https://github.com/google/gson
     implementation 'com.google.code.gson:gson:2.10.1'
 
+    // 本地gpt庫？
+    implementation "com.aallam.openai:openai-client:3.2.0"
+
 }
