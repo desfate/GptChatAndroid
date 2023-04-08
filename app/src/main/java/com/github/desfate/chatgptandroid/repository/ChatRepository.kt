@@ -8,11 +8,13 @@ import com.github.desfate.chatgptandroid.di.dataStore
 import com.github.desfate.gptcore.beans.request.CompletionsRequest
 import com.github.desfate.gptcore.beans.request.ImageGenerationsRequest
 import com.github.desfate.gptcore.beans.response.CompletionsResponse
+import com.github.desfate.gptcore.beans.response.CompletionsStreamResponse
 import com.github.desfate.gptcore.beans.response.ImageGenerationsResponse
 import com.github.desfate.gptcore.config.BASE_SECRET_KEY
 import com.github.desfate.gptcore.service.GptService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import okhttp3.ResponseBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -33,6 +35,10 @@ class ChatRepository @Inject constructor(
 
     suspend fun getImageReq(request: ImageGenerationsRequest): ImageGenerationsResponse{
         return gptService.completionsImage(request)
+    }
+
+    suspend fun getStreamReq(request: CompletionsRequest): ResponseBody {
+        return gptService.completionsMessageStream(request)
     }
 
     // 获取SECRET KEY

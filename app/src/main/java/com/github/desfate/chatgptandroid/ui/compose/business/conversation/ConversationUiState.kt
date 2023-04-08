@@ -31,14 +31,19 @@ class ConversationUiState(
     fun addMessage(msg: Message) {
         _messages.add(0, msg) // Add to the beginning of the list
     }
+
+    fun findMessage(messageId: String): Message? {
+        return _messages.find { it.key == messageId}
+    }
 }
 
 @Immutable
 data class Message(
     val author: String,
-    val content: String,
+    var content: String,
     val timestamp: String,
     val image: Int? = null,
     val authorImage: Int = if (author == "me") R.drawable.ic_chat_user else R.drawable.ic_chat_ai,
     val imageSrc: String = "",
+    val key: String = "",
 )

@@ -12,11 +12,15 @@ import com.github.desfate.chatgptandroid.ui.compose.business.conversation.Messag
 import com.github.desfate.gptcore.beans.request.CompletionsRequest
 import com.github.desfate.gptcore.beans.request.ImageGenerationsRequest
 import com.github.desfate.gptcore.beans.response.CompletionsResponse
+import com.github.desfate.gptcore.beans.response.Delta
 import com.github.desfate.gptcore.beans.response.ImageGenerationsResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.util.*
 import javax.inject.Inject
 
@@ -42,27 +46,77 @@ class ChatViewModel @Inject constructor(val chatRepository: ChatRepository) : Vi
     fun textReq(info: String){
         netRequest(
             requestBlock = {
-                chatRepository.getTestReq(
+//                chatRepository.getTestReq(
+//                    CompletionsRequest(
+//                        arrayListOf(
+//                            com.github.desfate.gptcore.beans.request.Message(
+//                                info, "user"
+//                            )
+//                        ), "gpt-3.5-turbo"
+//                    )
+//                )
+
+                chatRepository.getStreamReq(
                     CompletionsRequest(
                         arrayListOf(
                             com.github.desfate.gptcore.beans.request.Message(
                                 info, "user"
                             )
                         ), "gpt-3.5-turbo"
+                    ,true
                     )
                 )
 
             },
             success = {
-                exampleUiState.addMessage(
-                    Message(
-                        "gpt",
-                        it.choices[0].message.content,
-                        TimeUtils.getSafeDateFormat("HH:mm:ss")
-                            .format(Date(System.currentTimeMillis())),
-                    ),
-                )
-                completionsResponse.value = it
+                val bufferReader = BufferedReader(InputStreamReader(it.byteStream()))
+                var str = ""
+                while (true){
+                    str = bufferReader.readLine()
+                    if (str.isNotEmpty()) {
+                        when{
+                            str.startsWith("event:")->{
+                                //处理数据
+                                println("@@@ event = "+ str)
+                            }
+                            str.startsWith("data:")->{
+                                val jsonStr = str.substring(5).trim()
+                                if (jsonStr.equals("[DONE]")) {
+                                    //结束处理
+                                    break
+                                }
+                                //处理数据
+                                println("@@@ data = "+ str)
+                            }
+                        }
+                    }
+                }
+
+
+                // 流数据显示
+//                if (it.choices.isNotEmpty()){
+//                    if (it.choices[0].delta.role.isNotEmpty()){
+//                        if (exampleUiState.findMessage(it.id) == null){
+//                            exampleUiState.addMessage(
+//                                Message(
+//                                    "gpt",
+//                                    ":",
+//                                    TimeUtils.getSafeDateFormat("HH:mm:ss")
+//                                        .format(Date(System.currentTimeMillis())),
+//                                    key = it.id
+//                                ),
+//                            )
+//                        }
+//                    }
+//                    if (it.choices[0].delta.content.isNotEmpty()){
+//                        messageContent.value += it.choices[0].delta.content
+//                        val message = exampleUiState.findMessage(it.id)
+//                        if (message != null){
+//                            message.content = messageContent.value
+//                        }
+//                    }
+//                }
+
             },
             error = {
                 println(it.message)
@@ -100,6 +154,7 @@ class ChatViewModel @Inject constructor(val chatRepository: ChatRepository) : Vi
     // 网络返回的原数据
     val completionsResponse = MutableStateFlow<CompletionsResponse?>(null)
     val imageGenerationsResponse = MutableStateFlow<ImageGenerationsResponse?>(null)
+    val messageContent = MutableStateFlow<String>("")
 
     val exampleUiState = ConversationUiState(
         initialMessages = listOf(
